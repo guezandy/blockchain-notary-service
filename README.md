@@ -1,20 +1,7 @@
-NOTE: In reference to my previous submissions feedback - of being unable to run the application.
-
-Can't find an obvious issue besides an outdated version of node. Here:
-https://github.com/nodejs/node/issues/15374
-
-Says that this was a problem in Node 8.5.x 
-I'm using node: v8.11.3 which is exactly what the course instructor had in her video.
-
-Please let me know if updating doesn't work - or if you have the correct version. This changes to use experimental modules is just so I can use ES6 importing - but I can do it the normal way.
-
-
 Chose to use HapiJS
 
 To run the server use:
-node  --experimental-modules server.mjs
-Note: Experimental-modules is just to use import/export
-
+npm start
 
 GET Endpoint
 http://localhost:8000/block/{height}
@@ -40,7 +27,7 @@ Returns the blocks json
 Testing steps:
 1. Download node modules packages
 2. Start server using
-node  --experimental-modules server.mjs
+npm start
 
 ```
 [tw-mbp-andrewr hapi_app (master)]$ node  --experimental-modules server.mjs

@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hapi": "^17.5.3"
+    "crypto-js": "^3.1.9-1",
+    "hapi": "^17.5.3",
+    "level": "^4.0.0"
   }
 }
