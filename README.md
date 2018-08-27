@@ -30,8 +30,11 @@ Testing steps:
 npm start
 
 ```
-[tw-mbp-andrewr hapi_app (master)]$ node  --experimental-modules server.mjs
-(node:72033) ExperimentalWarning: The ESM module loader is experimental.
+[tw-mbp-andrewr hapi_app (master)]$ npm start
+
+> hapi_app@1.0.0 start /Users/andrewr/Desktop/Blockchain couirse/hapi_app
+> node server.js
+
 Loading Blockchain
 Attempting to add block: First block in the chain - Genesis block
 Block added successfully
@@ -42,7 +45,7 @@ Server running at: http://localhost:8000
 http://localhost:8000/block/0
 
 Return:
-{"hash":"0864384591f75d7119c06f8f417bbca610fc14d991824057f808fb6a5ee64aa2","height":0,"body":"First block in the chain - Genesis block","time":"1534455514795","previousBlockHash":""}
+{"hash":"e312fdd6768a0b839ca1c4d789b4c1a03d14dcab7a7937f801e7d2de1d5194b1","height":0,"body":"First block in the chain - Genesis block","time":"1535340548794","previousBlockHash":""}
 
 4. Add a new block
 http://localhost:8000/block
@@ -51,14 +54,14 @@ key: body value: Testing block with test string data
 
 Response:
 {
-    "hash": "c5499b75a66969d6f9bd63d6928b7bd636c06a80c48966e5e55743c18f53fc41",
+    "hash": "3c9261071a69299253b3d71e888958dbfcd4f929e570ab2b23b3ace95c24b4c5",
     "height": 1,
     "body": "Testing block with test string data",
-    "time": "1534455571470",
-    "previousBlockHash": "0864384591f75d7119c06f8f417bbca610fc14d991824057f808fb6a5ee64aa2"
+    "time": "1535340641204",
+    "previousBlockHash": "e312fdd6768a0b839ca1c4d789b4c1a03d14dcab7a7937f801e7d2de1d5194b1"
 }
 
 5. Get the newly created block back
 http://localhost:8000/block/1
 
-{"hash":"c5499b75a66969d6f9bd63d6928b7bd636c06a80c48966e5e55743c18f53fc41","height":1,"body":"Testing block with test string data","time":"1534455571470","previousBlockHash":"0864384591f75d7119c06f8f417bbca610fc14d991824057f808fb6a5ee64aa2"}
+{"hash":"3c9261071a69299253b3d71e888958dbfcd4f929e570ab2b23b3ace95c24b4c5","height":1,"body":"Testing block with test string data","time":"1535340641204","previousBlockHash":"e312fdd6768a0b839ca1c4d789b4c1a03d14dcab7a7937f801e7d2de1d5194b1"}
