@@ -16,9 +16,13 @@ server.route({
     method: 'GET',
     path: '/',
     handler: (request, h) => {
+        // TODO Make a landing page
         return 'hello world';
     }
 });
+
+
+
 
 // Get block route
 server.route({
