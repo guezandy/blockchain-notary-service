@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <title>Blockchain notary service</title>
+    <meta charset='utf-8'>
+
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO'
+        crossorigin='anonymous'>
+
+    <!-- TODO: Make this import work
+        <link href='views/styles/styles.css' rel='stylesheet'> 
+    -->
+</head>
+
+<body>
+    <div class="flex-container">
+        <div class="jumbotron">
+            <h1 class="display-4">Step 1: Enter wallet address</h1>
+            <p>Sub header text</p>
+            <hr>
+            <form method='POST' <form action="/requestValidation" method="post">
+                <div class="mb-3 row">
+                    <div class="col-sm-12">
+                        <label for="wallet">Enter wallet address</label>
+                        <input name='wallet' id='wallet' class="form-control"
+                            type='text' value='' required>
+                        <div class="invalid-feedback">
+                            Invalid message
+                        </div>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                </div>
+                <input type='submit' value='Submit wallet address' class='btn btn-primary mb-3'>
+            </form>
+            <div class="result">
+                <div class="alert alert-primary" role="alert">
+                    Test result
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

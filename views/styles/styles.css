@@ -1,0 +1,31 @@
+html,
+body {
+    height: 100%;
+}
+
+form {
+    width: 500px;
+}
+
+.flex-container {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.unit-radio {
+    display: flex;
+    flex-flow: column;
+    align-items: baseline;
+    margin-top: 20px;
+}
+
+.jumbotron {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    text-align: center;
+}

@@ -1,3 +1,16 @@
+# Blockchain notary service
++ By: Andrew Rodriguez
++ Production URL: <http://p2.squareinches.com>
+
+
+## Outside resources
++ Styling via [Bootstrap CDN](https://www.bootstrapcdn.com)
++ [HapiJS rendering views](https://futurestud.io/tutorials/hapi-how-to-render-views)
+
+
+
+
+
 Chose to use HapiJS
 
 To run the server use:

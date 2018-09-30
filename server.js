@@ -2,26 +2,38 @@
 
 const Blockchain = require('./blockchain');
 const Hapi = require('hapi');
+const Vision = require('vision')
+const Handlebars = require('handlebars')
 
 const mChain = new Blockchain();
 
 // Create a server with a host and port
 const server = Hapi.server({
     host: 'localhost',
-    port: 8000
+    port: 8005
 });
 
-// Add the route
 server.route({
     method: 'GET',
     path: '/',
     handler: (request, h) => {
         // TODO Make a landing page
-        return 'hello world';
+        return h.view('index');
     }
 });
 
 
+// TODO - add http://localhost:8000/requestValidation route
+server.route({
+    method: 'POST',
+    path: '/requestValidation',
+    handler: async (request, h) => {
+        return 'ues';
+    }
+});
+
+
+// TODO - /message-signature/validate
 
 
 // Get block route
@@ -73,6 +85,20 @@ server.route({
 async function start() {
     // Initialize the blockchain as soon as we start the server
     await mChain.init();
+
+    await server.register({
+        plugin: require('vision') // add template rendering support in hapi
+    });
+
+    // configure template support   
+    server.views({
+        engines: {
+            html: Handlebars
+        },
+        path: __dirname + '/views',
+        // Default path for route '/'
+        layout: 'index'
+    })
 
     try {
         await server.start();
