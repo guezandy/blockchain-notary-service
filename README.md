@@ -6,9 +6,15 @@
 ## Outside resources
 + Styling via [Bootstrap CDN](https://www.bootstrapcdn.com)
 + [HapiJS rendering views](https://futurestud.io/tutorials/hapi-how-to-render-views)
++ [NodeJS refresher](https://github.com/remy/nodemon)
+
+## Class definitions
 
 
+## Level db object stored
++ Queue is an array of RegisterItems that is used to keep track - when used I immediately turn it into a map
 
+## Running guide
 
 
 Chose to use HapiJS

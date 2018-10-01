@@ -11,8 +11,9 @@
   "dependencies": {
     "crypto-js": "^3.1.9-1",
     "handlebars": "^4.0.12",
-    "hapi": "^17.5.3",
+    "hapi": "^17.6.0",
     "level": "^4.0.0",
+    "nodemon": "^1.18.4",
     "vision": "^5.4.0"
   }
 }

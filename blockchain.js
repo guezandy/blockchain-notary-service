@@ -57,14 +57,14 @@ class Blockchain {
         return parsedChain;
     }
 
-    addBlockFromPayload(body) {
-        const block = new Block(body);
+    addBlockFromPayload(payload) {
+        const block = new Block(payload);
         return this.addBlock(block);
     }
 
     // Add new block
     async addBlock(newBlock) {
-        console.log(`Attempting to add block: ${newBlock.body}`);
+        console.log(`Attempting to add block for address: ${newBlock.address}`);
         // If chain is not loaded into memory - lets load it
         if (!this.initialized) {
             console.log('Blockchain not loaded in memory yet - Initializing');
