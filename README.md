@@ -2,6 +2,8 @@
 + By: Andrew Rodriguez
 + Production URL: <http://p2.squareinches.com>
 
+## Project specifications
++ Node app using HapiJS
 
 ## Outside resources
 + Styling via [Bootstrap CDN](https://www.bootstrapcdn.com)
@@ -9,15 +11,17 @@
 + [NodeJS refresher](https://github.com/remy/nodemon)
 
 ## Class definitions
++ RegistryItem -  Stores information provided for a single request to register a star
++ RegistryQueue - Builds a list of RegistryItem to store DB of requests to register a star - also has methods to interact with all RegisterItems stored
++ Block - Stores information about the star being registered as well as basic information used to handle a block in the blockchain.
++ Blockchain - Builds a list of Blocks to store DB - also has methods to interact with all Blocks stored
 
-
-## Level db object stored
-+ Queue is an array of RegisterItems that is used to keep track - when used I immediately turn it into a map
-
-## Modifications from project requirements
+## Level db key value stored
++ key: 'queue' is an array of RegistryItems that is used to keep track of all pending requests
++ key: 'chain' is an array of blocks each block contains a registered star
 
 ## Running guide
-
++ Run `npm install`
 
 
 
