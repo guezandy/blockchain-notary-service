@@ -14,7 +14,12 @@
 ## Level db object stored
 + Queue is an array of RegisterItems that is used to keep track - when used I immediately turn it into a map
 
+## Modifications from project requirements
+
 ## Running guide
+
+
+
 
 
 Chose to use HapiJS

@@ -118,6 +118,36 @@ server.route({
     }
 });
 
+// Get all stars registered to wallet address
+server.route({
+    method: 'GET',
+    path: '/stars/{urlParam}',
+    handler: async (request, h) => {
+        const { urlParam } = request.params;
+        console.log(urlParam);
+
+        // Confirm the param exists and there is only 1 colon
+        if (!urlParam) {
+            return { 'error': 'Missing required param'}
+        }
+        const splitUrlParam = urlParam.split(":");
+        if(splitUrlParam.length > 2) {
+            return { 'error': 'invalid param' }
+        }
+
+        const method = splitUrlParam[0];
+        const field = splitUrlParam[1];
+
+        if(method === 'address') {
+            return 'No address yet';   
+        } else if(method === 'hash') {
+            return await mChain.getBlockFromHash(field);
+        }
+
+        return {method, field};
+    }
+});
+
 // Get block route
 server.route({
     method: 'GET',
