@@ -21,8 +21,13 @@
 + key: 'chain' is an array of blocks each block contains a registered star
 
 ## Running guide
-+ Run `npm install`
++ `npm install`
+Download of all required packages
++ `npm start`
+As soon as you start the server for the first time - an initial Genesis block will be created as well as an empty list of star registry requests. Basically, initializing all Objects needed for functionality.
 
++ Post request: `http://localhost:8000/requestValidation` | Body: {"address": "any address" }
++ 
 
 
 
