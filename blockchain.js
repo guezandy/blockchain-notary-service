@@ -187,6 +187,42 @@ class Blockchain {
             return true;
         }
     }
+
+    getBlocksByAddress(address) {
+        return new Promise((resolve, reject) => {
+            // Short circuit if height is invalid
+            if (!address) {
+                console.log('Error missing wallet address');
+                reject('Error missing wallet address');
+            }
+            this.db.get('chain', async (error, rawChain) => {
+                if (error) {
+                    console.log("Error retreiving chain from DB - try init()");
+                    reject("Error retreiving chain from DB - try init()");
+                }
+                const chain = this._parseRawChainData(rawChain);
+                // Because chain is a list of hashes - I need to map over the list making queries to level db
+                // To get the corresponding data for each block.
+                // But because each mapping needs to make an asynchronous call and hold the thread
+                // I had to make each mapping returns a Promise and await for all the mappings to be resolved
+                // Before returning the result - else this will resolve before getting the data for each block
+                const result = await Promise.all(chain.map(async blockHash => {
+                    return new Promise(async (resolve, reject) => {
+                        const rawBlock = await this.getBlockFromHash(blockHash);
+                        const block = JSON.parse(rawBlock);
+                        // Check if address matches
+                        if (address === block['address']) {
+                            resolve(block);
+                        }
+                        resolve();
+                    });
+                }));
+                // Mapping returns null entries for blocks that don't match so here we filter out null entries
+                const filteredResults = result.filter(block => !!block);
+                resolve(filteredResults);
+            });
+        });
+    }
 }
 
 module.exports = Blockchain

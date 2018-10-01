@@ -9,6 +9,7 @@
 + Styling via [Bootstrap CDN](https://www.bootstrapcdn.com)
 + [HapiJS rendering views](https://futurestud.io/tutorials/hapi-how-to-render-views)
 + [NodeJS refresher](https://github.com/remy/nodemon)
++ [Async await while mapping over array](https://stackoverflow.com/questions/40140149/use-async-await-with-array-map)
 
 ## Class definitions
 + RegistryItem -  Stores information provided for a single request to register a star
@@ -18,7 +19,8 @@
 
 ## Level db key value stored
 + key: 'queue' is an array of RegistryItems that is used to keep track of all pending requests
-+ key: 'chain' is an array of blocks each block contains a registered star
++ key: 'chain' is an array of blocks each block contains a registered star - this CHAIN just stores an array of block hashes in level db.
++ key: {blockhash}: Returns data on a specific block with hash = blockhash
 
 ## Running guide
 + `npm install`
@@ -105,7 +107,8 @@ Functionality:
 + Adds block to the blockchain.
 
 ### Blockchain explorer methods
-GET request `http://localhost:8005/stars/hash:958a4dbf1a13c9040e60b1b8018736e56de83cf44b76a0eb98e1cd44b19b195b`
+#### Search block by hash
+GET request `http://localhost:8000/stars/hash:958a4dbf1a13c9040e60b1b8018736e56de83cf44b76a0eb98e1cd44b19b195b`
 ```
 Sample Response:
 {
@@ -120,4 +123,38 @@ Sample Response:
     },
     "previousBlockHash":"958a4dbf1a13c9040e60b1b8018736e56de83cf44b76a0eb98e1cd44b19b195b"
 }
+```
+#### Search block by height
+GET request `http://localhost:8000/block/9`
+```
+Sample Response:
+{
+    "hash":"a04e22ba773f402f76e8410e16732e28ea6394d9c4f64c329b18e2d6c7eccd93",
+    "height":9,
+    "address":"sample_address",
+    "time":"1538402966023",
+    "star":{
+        "dec":"sample_dec",
+        "ra":"sample_ra",
+        "story":"sample_story"
+    },
+    "previousBlockHash":"958a4dbf1a13c9040e60b1b8018736e56de83cf44b76a0eb98e1cd44b19b195b"
+}
+```
+#### Search for all blocks that contain an Address
+GET request `http://localhost:8000/stars/address:sample_address`
+```
+Sample Response:
+[{
+    "hash":"a04e22ba773f402f76e8410e16732e28ea6394d9c4f64c329b18e2d6c7eccd93",
+    "height":9,
+    "address":"sample_address",
+    "time":"1538402966023",
+    "star":{
+        "dec":"sample_dec",
+        "ra":"sample_ra",
+        "story":"sample_story"
+    },
+    "previousBlockHash":"958a4dbf1a13c9040e60b1b8018736e56de83cf44b76a0eb98e1cd44b19b195b"
+}]
 ```

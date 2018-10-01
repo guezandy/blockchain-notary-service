@@ -91,6 +91,8 @@ server.route({
             return { 'error': 'Cannot register star - has yet to validate wallet address' }
         }
 
+        // TODO: Should we delete the registryItem now that a star is being registerd?
+
         let newBlock = null;
         try {
             newBlock = await mChain.addBlockFromPayload(request.payload);
@@ -124,7 +126,6 @@ server.route({
     path: '/stars/{urlParam}',
     handler: async (request, h) => {
         const { urlParam } = request.params;
-        console.log(urlParam);
 
         // Confirm the param exists and there is only 1 colon
         if (!urlParam) {
@@ -138,13 +139,17 @@ server.route({
         const method = splitUrlParam[0];
         const field = splitUrlParam[1];
 
+        if (!['address', 'hash'].includes(method) || !field) {
+            return { 'error': 'Invalid query method' }
+        }
+
         if(method === 'address') {
-            return 'No address yet';   
+            return await mChain.getBlocksByAddress(field);
         } else if(method === 'hash') {
             return await mChain.getBlockFromHash(field);
         }
 
-        return {method, field};
+        return { error: 'Internal error' };
     }
 });
 
