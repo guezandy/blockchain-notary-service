@@ -27,7 +27,7 @@ Download of all required packages
 As soon as you start the server for the first time - an initial Genesis block will be created as well as an empty list of star registry requests. Basically, initializing all Objects needed for functionality.
 
 ## API GUIDE
-+ Request Validation
+### Request Validation
 Post request: `http://localhost:8000/requestValidation`
 ```
 Payload: 
@@ -45,7 +45,7 @@ Sample Response:
 }
 ```
 
-+ Validate with Signature
+### Validate with Signature
 POST request `http://localhost:8000/message-signature/validate`
 ```
 Payload: 
@@ -69,7 +69,7 @@ Sample Response:
 NOTE: Time is in miliseconds
 ```
 
-+ Register Star
+### Register Star
 POST request `http://localhost:8000/block` 
 ```
 Payload:
@@ -104,7 +104,7 @@ Functionality:
 + Creates a valid block by populating hash, previousBlockHash, time, height and saves all fields related to the star.
 + Adds block to the blockchain.
 
-+ Blockchain explorer methods
+### Blockchain explorer methods
 GET request `http://localhost:8005/stars/hash:958a4dbf1a13c9040e60b1b8018736e56de83cf44b76a0eb98e1cd44b19b195b`
 ```
 Sample Response:
