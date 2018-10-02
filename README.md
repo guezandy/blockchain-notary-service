@@ -1,6 +1,6 @@
 # Blockchain notary service
 + By: Andrew Rodriguez
-+ Production URL: <http://p2.squareinches.com>
++ Production URL: n/a
 
 ## Project specifications
 + Node app using HapiJS
@@ -24,6 +24,9 @@
 
 ## Diverted from project requirements
 + Used a 1000000 mili seconds or 1000 seconds time window instead of 300 seconds. Just easier to test
++ This app allows registering of unlimited number of stars as long as the 1000 seconds validation window is not done - via the api.
++ Working on a UI portion for this project - it may not be complete by the time the grader is looking.
+
 
 ## Running guide
 + `npm install`

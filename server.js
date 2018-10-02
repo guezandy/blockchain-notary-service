@@ -13,7 +13,7 @@ const mRegistryQueue = new RegistryQueue();
 // Create a server with a host and port
 const server = Hapi.server({
     host: 'localhost',
-    port: 8005
+    port: 8000
 });
 
 // Default landing view which contains a form to fill out
