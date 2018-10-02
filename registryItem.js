@@ -3,7 +3,7 @@
 |  ===============================================*/
 
 // Miliseconds
-const VALIDATION_WINDOW = 1000000
+const VALIDATION_WINDOW = 300000
 
 class RegistryItem {
     constructor() {
@@ -21,13 +21,13 @@ class RegistryItem {
         const requestTimeStamp = new Date().getTime().toString();
         this.address = address;
         this.requestTimeStamp = requestTimeStamp;
-        this.message = `${address}:${requestTimeStamp}:drewStarRegistry`;
+        this.message = `${address}:${requestTimeStamp}:starRegistry`;
         this.validationWindow = VALIDATION_WINDOW;
     }
 
     // Take json for a registry item and turn it into a registry item
     loadRegistryItemFromJson(registryJson) {
-        const { address, requestTimeStamp, message, validationWindow } = registryJson;
+        const { address, requestTimeStamp, message, validationWindow, signature, signatureValid } = registryJson;
         if (!address || !requestTimeStamp || !message || !validationWindow) {
             return null;
         }
@@ -38,6 +38,8 @@ class RegistryItem {
         // (requestTimeStamp + 300) - currentTimeStamp
         const currentTimeStamp = new Date().getTime().toString();
         this.validationWindow = (parseInt(requestTimeStamp) + VALIDATION_WINDOW) - currentTimeStamp;
+        this.signature = signature;
+        this.signatureValid = signatureValid;
     }
 
     toJson() {
