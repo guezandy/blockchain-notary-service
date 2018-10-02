@@ -13,7 +13,7 @@ const mRegistryQueue = new RegistryQueue();
 // Create a server with a host and port
 const server = Hapi.server({
     host: 'localhost',
-    port: 8000
+    port: 8005
 });
 
 // Default landing view which contains a form to fill out
@@ -36,10 +36,20 @@ server.route({
                 'error': 'Wallet address is required'
             }
         }
-        // Method handles saving new registry request to DB with all other requests
-        const newRegistryItem = await mRegistryQueue.addRegistryItemToQueueForAddress(address)
+        // Check if there is an active registry item + update validation window
+        let registryItem;
+        try {
+            registryItem = await mRegistryQueue.getAddressRegistryItem(address);
+        } catch(e) {
+            console.log('No valid request found for this address');
+        }
+        // If there isnt a registry item or the validation window has expired - lets create a new one
+        if (!registryItem || registryItem.validationWindow < 0) {
+            // Method handles saving new registry request to DB with all other requests
+            registryItem = await mRegistryQueue.addRegistryItemToQueueForAddress(address);
+        }
         // return json version of registry item
-        return newRegistryItem.toJson();
+        return registryItem.toJson();
     }
 });
 
@@ -77,17 +87,20 @@ server.route({
     path: '/block',
     handler: async (request, h) => {
         const { star, address } = request.payload;
-        if(!star || !address || !star.dec || !star.ra || !star.story) {
+        if(!star || !address || !star.dec || !star.ra || !star.story || star.story.length > 250) {
             return { 'error': 'Invalid payload' }
         }
 
         // Does this address have a valid RegistryItem and a valid signature?
-        const canRegisterStar = await mRegistryQueue.addressHasValidSignedRegistryItem(address);
+        let canRegisterStar = false;
+        try {
+            const registryItem = await mRegistryQueue.getAddressRegistryItem(address);
+            canRegisterStar = registryItem.signatureValid;
+        } catch (e) {}
+
         if (!canRegisterStar) {
             return { 'error': 'Cannot register star - has yet to validate wallet address' }
         }
-
-        // TODO: Should we delete the registryItem now that a star is being registerd - YES
 
         let newBlock = null;
         try {
@@ -99,6 +112,9 @@ server.route({
         if(!newBlock) {
             return { 'error': 'Internal error' }
         }
+
+        // Delete the registryItem now that a star is being registerd - so they cannot create another star with this registration
+        await mRegistryQueue.removeRegistryItemForAddress(address);
 
         // Build response json
         return {

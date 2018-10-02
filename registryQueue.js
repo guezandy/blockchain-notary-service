@@ -118,7 +118,14 @@ class RegistryQueue {
         };
     }
 
-    async addressHasValidSignedRegistryItem(address) {
+    async removeRegistryItemForAddress(address) {
+        const queue = await this.getQueueMap();
+        delete queue[address];
+        this.db.put('queue', JSON.stringify(Object.values(queue)));
+        return;
+    }
+
+    async getAddressRegistryItem(address) {
         console.log(`Checking queue for any valid signed requests from: ${address}`);
         // If queue is not loaded into memory - lets load it to be able to add to it
         if (!this.initialized) {
@@ -129,7 +136,10 @@ class RegistryQueue {
         if (!registryItemJson) {
             return;
         }
-        return registryItemJson['signatureValid'];
+        const registryItem = new RegistryItem();
+        registryItem.loadRegistryItemFromJson(registryItemJson);
+
+        return registryItem;
     }
 
     getQueueMap() {
@@ -152,7 +162,7 @@ class RegistryQueue {
             const addressAsString = '' + address;
             const queue = await this.getQueueMap();
             if (!queue[addressAsString]) {
-                return;
+                reject();
             }
             resolve(queue[addressAsString]);
         });

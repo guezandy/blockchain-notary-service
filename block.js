@@ -13,6 +13,7 @@ class Block {
         this.star = {
             ...payload.star
         }
+        this.signature = "";
         this.previousBlockHash = "";
     }
 }
