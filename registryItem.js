@@ -3,7 +3,7 @@
 |  ===============================================*/
 
 // Miliseconds
-const VALIDATION_WINDOW = 300000
+const VALIDATION_WINDOW = 1000000
 
 class RegistryItem {
     constructor() {

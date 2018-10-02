@@ -22,6 +22,9 @@
 + key: 'chain' is an array of blocks each block contains a registered star - this CHAIN just stores an array of block hashes in level db.
 + key: {blockhash}: Returns data on a specific block with hash = blockhash
 
+## Diverted from project requirements
++ Used a 1000000 mili seconds or 1000 seconds time window instead of 300 seconds. Just easier to test
+
 ## Running guide
 + `npm install`
 Download of all required packages
@@ -34,16 +37,17 @@ Post request: `http://localhost:8000/requestValidation`
 ```
 Payload: 
 {
-    "address": "sample_address" 
+    "address": "15chA41rzp22sh5DpfqCC45gAgXd65doAq" 
 }
 ```
 ```
-Sample Response:
+Sample response:
+NOTE: time is in miliseconds
 {
-    "address": "sample_address",
-    "message": "sample_address:1538372816308:drewStarRegistry",
-    "requestTimeStamp": "1538372816308",
-    "validationWindow": 300000
+    "address": "15chA41rzp22sh5DpfqCC45gAgXd65doAq",
+    "message": "15chA41rzp22sh5DpfqCC45gAgXd65doAq:1538494266596:drewStarRegistry",
+    "requestTimeStamp": "1538494266596",
+    "validationWindow": 1000000
 }
 ```
 
@@ -52,21 +56,20 @@ POST request `http://localhost:8000/message-signature/validate`
 ```
 Payload: 
 {
-    "address": "sample_address",
-    "signature": "sample_signature"
+    "address": "15chA41rzp22sh5DpfqCC45gAgXd65doAq",
+    "signature": "H473p+j2HgEfkMbGS3x4cBpHTHdDNEjaWlqsLr1/UuzyLjqzs2kkCzWaO/7BD6pk/LZUklw1zZ00LnghESqIUrI="
 }
-NOTE: Assuming signature is valid
 ```
 ```
 Sample Response:
 {
     "registerStar": true,
     "status": {
-        "address": "sample_address",
-        "message": "sample_address:1538372816308:drewStarRegistry",
-        "requestTimeStamp": "1538372816308",
-        "validationWindow": -29689731,
-        "messageSignature": true
+        "address": "15chA41rzp22sh5DpfqCC45gAgXd65doAq",
+        "message": "15chA41rzp22sh5DpfqCC45gAgXd65doAq:1538494266596:drewStarRegistry",
+        "requestTimeStamp": "1538494266596",
+        "validationWindow": 739045,
+        "messageSignature": "valid"
     }
 }
 NOTE: Time is in miliseconds
@@ -77,11 +80,11 @@ POST request `http://localhost:8000/block`
 ```
 Payload:
 {
-	"address": "sample_address",
+	"address": "15chA41rzp22sh5DpfqCC45gAgXd65doAq",
 	"star": {
-		"dec": "sample_dec",
-		"ra": "sample_ra",
-		"story": "sample_story"
+		"dec": "bright",
+		"ra": "star",
+		"story": "middle of orions belt"
 	}
 }
 ```
@@ -89,17 +92,17 @@ Payload:
 Sample Response:
 {
     "body": {
-        "address": "sample_address",
+        "address": "15chA41rzp22sh5DpfqCC45gAgXd65doAq",
         "star": {
-            "dec": "sample_dec",
-            "ra": "sample_ra",
-            "story": "sample_story"
+            "dec": "bright",
+            "ra": "star",
+            "story": "middle of orions belt"
         }
     },
-    "hash": "a04e22ba773f402f76e8410e16732e28ea6394d9c4f64c329b18e2d6c7eccd93",
-    "height": 9,
-    "previousBlockHash": "958a4dbf1a13c9040e60b1b8018736e56de83cf44b76a0eb98e1cd44b19b195b",
-    "time": "1538402966023"
+    "hash": "515f7266fef60fcfb02d03eae510709983b5f29cf478b310c9a3f780e7c0ddf1",
+    "height": 1,
+    "previousBlockHash": "e96752197e05dec755115aa1f93bf1a87ddeff6e0e2991bd87560106a56d5378",
+    "time": "1538494577448"
 }
 ```
 Functionality:
@@ -109,53 +112,54 @@ Functionality:
 
 ### Blockchain explorer methods
 #### Search block by hash
-GET request `http://localhost:8000/stars/hash:958a4dbf1a13c9040e60b1b8018736e56de83cf44b76a0eb98e1cd44b19b195b`
+GET request `http://localhost:8000/stars/hash:515f7266fef60fcfb02d03eae510709983b5f29cf478b310c9a3f780e7c0ddf1`
 ```
 Sample Response:
 {
-    "hash":"a04e22ba773f402f76e8410e16732e28ea6394d9c4f64c329b18e2d6c7eccd93",
-    "height":9,
-    "address":"sample_address",
-    "time":"1538402966023",
+    "hash":"515f7266fef60fcfb02d03eae510709983b5f29cf478b310c9a3f780e7c0ddf1",
+    "height":1,
+    "address":"15chA41rzp22sh5DpfqCC45gAgXd65doAq",
+    "time":"1538494577448",
     "star":{
-        "dec":"sample_dec",
-        "ra":"sample_ra",
-        "story":"sample_story"
+        "dec":"bright",
+        "ra":"star",
+        "story":"middle of orions belt"
     },
-    "previousBlockHash":"958a4dbf1a13c9040e60b1b8018736e56de83cf44b76a0eb98e1cd44b19b195b"
+    "previousBlockHash":"e96752197e05dec755115aa1f93bf1a87ddeff6e0e2991bd87560106a56d5378"
 }
 ```
 #### Search block by height
-GET request `http://localhost:8000/block/9`
+GET request `http://localhost:8000/block/1`
 ```
 Sample Response:
 {
-    "hash":"a04e22ba773f402f76e8410e16732e28ea6394d9c4f64c329b18e2d6c7eccd93",
-    "height":9,
-    "address":"sample_address",
-    "time":"1538402966023",
+    "hash":"515f7266fef60fcfb02d03eae510709983b5f29cf478b310c9a3f780e7c0ddf1",
+    "height":1,
+    "address":"15chA41rzp22sh5DpfqCC45gAgXd65doAq",
+    "time":"1538494577448",
     "star":{
-        "dec":"sample_dec",
-        "ra":"sample_ra",
-        "story":"sample_story"
+        "dec":"bright",
+        "ra":"star",
+        "story":"middle of orions belt"
     },
-    "previousBlockHash":"958a4dbf1a13c9040e60b1b8018736e56de83cf44b76a0eb98e1cd44b19b195b"
+    "previousBlockHash":"e96752197e05dec755115aa1f93bf1a87ddeff6e0e2991bd87560106a56d5378"
 }
 ```
 #### Search for all blocks that contain an Address
-GET request `http://localhost:8000/stars/address:sample_address`
+GET request `http://localhost:8000/stars/address:15chA41rzp22sh5DpfqCC45gAgXd65doAq`
 ```
 Sample Response:
 [{
-    "hash":"a04e22ba773f402f76e8410e16732e28ea6394d9c4f64c329b18e2d6c7eccd93",
-    "height":9,
-    "address":"sample_address",
-    "time":"1538402966023",
+    "hash":"515f7266fef60fcfb02d03eae510709983b5f29cf478b310c9a3f780e7c0ddf1",
+    "height":1,
+    "address":"15chA41rzp22sh5DpfqCC45gAgXd65doAq",
+    "time":"1538494577448",
     "star":{
-        "dec":"sample_dec",
-        "ra":"sample_ra",
-        "story":"sample_story"
+        "dec":"bright",
+        "ra":"star",
+        "story":"middle of orions belt"
     },
-    "previousBlockHash":"958a4dbf1a13c9040e60b1b8018736e56de83cf44b76a0eb98e1cd44b19b195b"
+    "previousBlockHash":"e96752197e05dec755115aa1f93bf1a87ddeff6e0e2991bd87560106a56d5378"
 }]
+NOTE: Returns array of stars registered by this address
 ```

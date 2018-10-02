@@ -54,17 +54,18 @@ server.route({
                 'error': 'Address and Signature are required'
             }
         }
-        // Validate signature and save to db
-        console.log('1');
-        const registryItem = await mRegistryQueue.validateSignature(address, signature);
-        console.log('2');
-        const isSignatureValid = registryItem.isSignatureValid;
+        // Validate signature and save to db - returns errors and registry item
+        const { errors, registryItem } = await mRegistryQueue.validateSignature(address, signature);
+        if(errors.length > 0) {
+            return { 'errors': errors };
+        }
+
+        const isSignatureValid = registryItem.signatureValid;
         return {
-            // TODO - don't really understand this registerStar field
             registerStar: isSignatureValid,
             status: {
                 ...registryItem.toJson(),
-                messageSignature: isSignatureValid
+                messageSignature: isSignatureValid ? "valid" : "invalid"
             }
         }
     }
@@ -172,7 +173,6 @@ server.route({
         return block ? block : {'error': 'Internal error'};;
     }
 });
-
 
 // Start the server
 async function start() {

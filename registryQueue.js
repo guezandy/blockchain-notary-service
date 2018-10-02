@@ -77,8 +77,6 @@ class RegistryQueue {
     async validateSignature(mAddress, mSignature) {
         console.log(`Attempting to add signature validtion to registry item for: ${mAddress}`);
 
-        // TODO: Confirm time has not expired
-
         // If queue is not loaded into memory - lets load it to be able to add to it
         if (!this.initialized) {
             console.log('Registry Queue not loaded in memory yet - Initializing');
@@ -86,33 +84,38 @@ class RegistryQueue {
         }
 
         const registryItemJson = await this.getRegistryItemJsonForAddress(mAddress);
-        console.log('3', registryItemJson);
         if (!registryItemJson) {
-            console.log('4');
             return;
         }
         const registryItem = new RegistryItem();
         registryItem.loadRegistryItemFromJson(registryItemJson);
         const message = registryItem.message;
 
-        console.log('5');
+        // Handle errors in validation
+        const errors = [];
+        // Check if registry request is expired
+        if(registryItem.validationWindow < 0) {
+            errors.push('Time has expired for this request');
+        }
 
-        // TODO Check if registry request is expired
-        console.log('Time left: ', registryItem.validationWindow/1000);
-        // TODO Check if signature is valid
-        const isSignatureValid = bitcoinMessage.verify(message, mAddress, mSignature);
-        console.log('v sig', isSignatureValid);
+        let isSignatureValid = false;
+        try {
+            isSignatureValid = bitcoinMessage.verify(message, mAddress, mSignature);
+        } catch(e) {
+            errors.push(e.toString());
+        }
 
         // Updates fields in JSON format
         registryItem.signature = mSignature;
         registryItem.signatureValid = isSignatureValid;
 
-        console.log('A', registryItem);
-
         this.registryQueueMap[registryItem.address] = registryItem.toDBJson();
         this.db.put('queue', JSON.stringify(Object.values(this.registryQueueMap)));
         console.log('Added valid signature to registry item successfully');
-        return registryItem;
+        return {
+            'errors': errors,
+            'registryItem': registryItem
+        };
     }
 
     async addressHasValidSignedRegistryItem(address) {
@@ -148,7 +151,6 @@ class RegistryQueue {
             // Level db map indeces only work if there strings
             const addressAsString = '' + address;
             const queue = await this.getQueueMap();
-            console.log('got queu', queue[addressAsString]);
             if (!queue[addressAsString]) {
                 return;
             }
