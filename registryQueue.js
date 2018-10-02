@@ -1,6 +1,8 @@
 const level = require('level');
 const RegistryItem = require('./registryItem');
 
+const bitcoin = require('bitcoinjs-lib');
+const bitcoinMessage = require('bitcoinjs-message');
 /* ===== RegistryQueue Class ==========================
 |  Class used to store and fetch all incoming star registry requests 		|
 |  ================================================*/
@@ -72,8 +74,10 @@ class RegistryQueue {
         return newRegistryItem;
     }
 
-    async addValidationSignatureToRegistryItem(address, signature, isSignatureValid) {
-        console.log(`Attempting to add signature validtion to registry item for: ${address}`);
+    async validateSignature(mAddress, mSignature) {
+        console.log(`Attempting to add signature validtion to registry item for: ${mAddress}`);
+
+        // TODO: Confirm time has not expired
 
         // If queue is not loaded into memory - lets load it to be able to add to it
         if (!this.initialized) {
@@ -81,16 +85,28 @@ class RegistryQueue {
             await this.init();
         }
 
-        const registryItemJson = await this.getRegistryItemJsonForAddress(address);
+        const registryItemJson = await this.getRegistryItemJsonForAddress(mAddress);
+        console.log('3', registryItemJson);
         if (!registryItemJson) {
+            console.log('4');
             return;
         }
         const registryItem = new RegistryItem();
         registryItem.loadRegistryItemFromJson(registryItemJson);
+        const message = registryItem.message;
+
+        console.log('5');
+
+        // Check if registry request is expired
+
+        // Check if signature is valid
+        const isSignatureValid =  false; // await bitcoinMessage.verify(message, mAddress, mSignature);
 
         // Updates fields in JSON format
-        registryItem.signature = signature;
+        registryItem.signature = mSignature;
         registryItem.signatureValid = isSignatureValid;
+
+        console.log('A', registryItem);
 
         this.registryQueueMap[registryItem.address] = registryItem.toDBJson();
         this.db.put('queue', JSON.stringify(Object.values(this.registryQueueMap)));
@@ -131,6 +147,7 @@ class RegistryQueue {
             // Level db map indeces only work if there strings
             const addressAsString = '' + address;
             const queue = await this.getQueueMap();
+            console.log('got queu', queue[addressAsString]);
             if (!queue[addressAsString]) {
                 return;
             }

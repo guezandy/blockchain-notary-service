@@ -55,6 +55,7 @@ Payload:
     "address": "sample_address",
     "signature": "sample_signature"
 }
+NOTE: Assuming signature is valid
 ```
 ```
 Sample Response:

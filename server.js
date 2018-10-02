@@ -54,16 +54,11 @@ server.route({
                 'error': 'Address and Signature are required'
             }
         }
-
-        // TODO how to know if signature is valid?
-        const isSignatureValid = true;
-        if(!isSignatureValid) {
-            return { error: 'Invalid signature' }
-        }
-
-        // If signature is valid lets save that in the db
-        const registryItem = await mRegistryQueue.addValidationSignatureToRegistryItem(address, signature, isSignatureValid);
-
+        // Validate signature and save to db
+        console.log('1');
+        const registryItem = await mRegistryQueue.validateSignature(address, signature);
+        console.log('2');
+        const isSignatureValid = false; // registryItem.isSignatureValid;
         return {
             // TODO - don't really understand this registerStar field
             registerStar: isSignatureValid,
@@ -91,7 +86,7 @@ server.route({
             return { 'error': 'Cannot register star - has yet to validate wallet address' }
         }
 
-        // TODO: Should we delete the registryItem now that a star is being registerd?
+        // TODO: Should we delete the registryItem now that a star is being registerd - YES
 
         let newBlock = null;
         try {
