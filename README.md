@@ -23,10 +23,11 @@
 + key: {blockhash}: Returns data on a specific block with hash = blockhash
 
 ## Diverted from project requirements
-+ Used a 1000000 mili seconds or 1000 seconds time window instead of 300 seconds. Just easier to test
++ Used a 1000000 mili seconds or 1000 seconds time window instead of 5 minutes. Just easier to test
 + This app allows registering of unlimited number of stars as long as the 1000 seconds validation window is not done - via the api.
 + Working on a UI portion for this project - it may not be complete by the time the grader is looking.
-
++ Didn't add support for hex or ascii
++ [walletAddress]:[timeStamp]:starRegistry -> [walletAddress]:[timeStamp]:drewStarRegistry
 
 ## Running guide
 + `npm install`
