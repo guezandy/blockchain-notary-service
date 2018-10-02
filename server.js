@@ -58,7 +58,7 @@ server.route({
         console.log('1');
         const registryItem = await mRegistryQueue.validateSignature(address, signature);
         console.log('2');
-        const isSignatureValid = false; // registryItem.isSignatureValid;
+        const isSignatureValid = registryItem.isSignatureValid;
         return {
             // TODO - don't really understand this registerStar field
             registerStar: isSignatureValid,
@@ -138,10 +138,15 @@ server.route({
             return { 'error': 'Invalid query method' }
         }
 
-        if(method === 'address') {
-            return await mChain.getBlocksByAddress(field);
-        } else if(method === 'hash') {
-            return await mChain.getBlockFromHash(field);
+        try {
+            if (method === 'address') {
+                return await mChain.getBlocksByAddress(field);
+            } else if (method === 'hash') {
+                return await mChain.getBlockFromHash(field);
+            }
+        } catch(e) {
+            // Fail nicely
+            return { 'error': e };
         }
 
         return { error: 'Internal error' };

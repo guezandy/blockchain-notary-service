@@ -97,10 +97,11 @@ class RegistryQueue {
 
         console.log('5');
 
-        // Check if registry request is expired
-
-        // Check if signature is valid
-        const isSignatureValid =  false; // await bitcoinMessage.verify(message, mAddress, mSignature);
+        // TODO Check if registry request is expired
+        console.log('Time left: ', registryItem.validationWindow/1000);
+        // TODO Check if signature is valid
+        const isSignatureValid = bitcoinMessage.verify(message, mAddress, mSignature);
+        console.log('v sig', isSignatureValid);
 
         // Updates fields in JSON format
         registryItem.signature = mSignature;
