@@ -109,7 +109,8 @@ class Blockchain {
                 }
                 const blockHash = chain[blockHeight];
                 if (blockHash) {
-                    const block = await this.getBlockFromHash(blockHash)
+                    // Block is already in JSON format
+                    const block = await this.getBlockFromHash(blockHash);
                     resolve(block);
                 } else {
                     reject('Invalid block hash');
@@ -126,7 +127,9 @@ class Blockchain {
                     reject(`Could not find block with hash ${blockHash}`);
                 }
                 // return object as a single string
-                resolve(block);
+                const blockObj = new Block();
+                blockObj.loadBlockFromJson(JSON.parse(block));
+                resolve(blockObj.toJson());
             });
         });
     }
@@ -208,8 +211,7 @@ class Blockchain {
                 // Before returning the result - else this will resolve before getting the data for each block
                 const result = await Promise.all(chain.map(async blockHash => {
                     return new Promise(async (resolve, reject) => {
-                        const rawBlock = await this.getBlockFromHash(blockHash);
-                        const block = JSON.parse(rawBlock);
+                        const block = await this.getBlockFromHash(blockHash);
                         // Check if address matches
                         if (address === block['address']) {
                             resolve(block);
@@ -219,7 +221,8 @@ class Blockchain {
                 }));
                 // Mapping returns null entries for blocks that don't match so here we filter out null entries
                 const filteredResults = result.filter(block => !!block);
-                resolve(filteredResults);
+                // Return nicely formatted JSON response
+                resolve(JSON.parse(JSON.stringify(filteredResults)));
             });
         });
     }

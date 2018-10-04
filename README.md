@@ -10,6 +10,8 @@
 + [HapiJS rendering views](https://futurestud.io/tutorials/hapi-how-to-render-views)
 + [NodeJS refresher](https://github.com/remy/nodemon)
 + [Async await while mapping over array](https://stackoverflow.com/questions/40140149/use-async-await-with-array-map)
++ [Verify string is ascii](https://stackoverflow.com/questions/14313183/javascript-regex-how-do-i-check-if-the-string-is-ascii-only)
++ [Byte length of a string](https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string)
 
 ## Class definitions
 + RegistryItem -  Stores information provided for a single request to register a star
@@ -23,9 +25,7 @@
 + key: {blockhash}: Returns data on a specific block with hash = blockhash
 
 ## Diverted from project requirements
-+ This app allows registering of unlimited number of stars as long as the 1000 seconds validation window is not done - via the api.
 + Working on a UI portion for this project - it may not be complete by the time the grader is looking.
-+ Didn't add support for hex or ascii
 
 ## Running guide
 + `npm install`

@@ -87,9 +87,26 @@ server.route({
     path: '/block',
     handler: async (request, h) => {
         const { star, address } = request.payload;
-        if(!star || !address || !star.dec || !star.ra || !star.story || star.story.length > 250) {
+        if(!star || !address || !star.dec || !star.ra || !star.story) {
             return { 'error': 'Invalid payload' }
         }
+
+        // https://stackoverflow.com/questions/14313183/javascript-regex-how-do-i-check-if-the-string-is-ascii-only
+        const storyIsAcii = /^[\x00-\x7F]*$/.test(star.story);
+        if(!storyIsAcii) {
+            return {
+                'error': 'Star story is not ascii'
+            }
+        }
+
+        // https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string
+        const byteLengthOfStarStory = encodeURI(star.story).split(/%..|./).length - 1;
+        if (byteLengthOfStarStory > 500) {
+            return {
+                'error': 'Star story too long'
+            }
+        }
+
 
         // Does this address have a valid RegistryItem and a valid signature?
         let canRegisterStar = false;
@@ -113,22 +130,23 @@ server.route({
             return { 'error': 'Internal error' }
         }
 
-        // Delete the registryItem now that a star is being registerd - so they cannot create another star with this registration
+        // Delete the registryItem now that a star is being registerd - so they cannot create another star with this request
         await mRegistryQueue.removeRegistryItemForAddress(address);
 
         // Build response json
-        return {
+        return JSON.parse(JSON.stringify({
             body: {
                 address: newBlock.address,
                 star: {
-                    ...newBlock.star
+                    ...newBlock.star,
+                    story: new Buffer(newBlock.star.story).toString('hex')
                 }
             },
             hash: newBlock.hash,
             height: newBlock.height,
             previousBlockHash: newBlock.previousBlockHash,
             time: newBlock.time
-        };
+        }));
     }
 });
 
