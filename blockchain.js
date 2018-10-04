@@ -212,9 +212,11 @@ class Blockchain {
                 const result = await Promise.all(chain.map(async blockHash => {
                     return new Promise(async (resolve, reject) => {
                         const block = await this.getBlockFromHash(blockHash);
-                        // Check if address matches
-                        if (address === block['address']) {
-                            resolve(block);
+                        if(block['body']) {
+                            // Check if address matches
+                            if (address === block['body']['address']) {
+                                resolve(block);
+                            }    
                         }
                         resolve();
                     });
