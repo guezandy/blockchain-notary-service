@@ -47,7 +47,8 @@ class RegistryItem {
             address: this.address,
             message: this.message,
             requestTimeStamp: this.requestTimeStamp,
-            validationWindow: this.validationWindow
+            // Mili to seconds
+            validationWindow: parseInt(this.validationWindow / 1000)
         }
     }
 

@@ -36,6 +36,8 @@ class Block {
         return {
             hash: this.hash,
             height: this.height,
+            time: this.time,
+            previousBlockHash: this.previousBlockHash,
             body: {
                 address: this.address,
                 star: {
